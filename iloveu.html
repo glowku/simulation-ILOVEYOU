@@ -1,0 +1,1958 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ILOVEYOU - The Real $10 Billion Cyber Attack</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Dancing+Script:wght@700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: #000;
+            color: #fff;
+            font-family: 'Courier Prime', monospace;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        #canvas-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+        
+        .ui-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 10;
+        }
+        
+        .title {
+            font-family: 'Dancing Script', cursive;
+            font-size: 5rem;
+            color: #ff6b6b;
+            text-shadow: 0 0 30px rgba(255, 107, 107, 0.8);
+            position: absolute;
+            top: 10%;
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0;
+            animation: fadeIn 2s ease-in-out forwards;
+            text-align: center;
+        }
+        
+        .subtitle {
+            font-size: 1.5rem;
+            color: #a0a0ff;
+            position: absolute;
+            top: 18%;
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0;
+            animation: fadeIn 2s ease-in-out 0.5s forwards;
+            text-align: center;
+            max-width: 800px;
+        }
+        
+        .heart-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 200px;
+            height: 200px;
+            cursor: pointer;
+            pointer-events: all;
+            transition: all 0.5s ease;
+            z-index: 50;
+        }
+        
+        .heart {
+            font-size: 12rem;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation: heartbeat 1.5s infinite;
+            transition: all 0.5s ease;
+            user-select: none;
+            opacity: 1;
+        }
+        
+        .heart-text {
+            position: absolute;
+            top: 70%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-weight: bold;
+            font-size: 1.5rem;
+            text-shadow: 0 0 15px rgba(0, 0, 0, 0.8);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            text-align: center;
+            width: 100%;
+        }
+        
+        .heart-container:hover .heart-text {
+            opacity: 1;
+        }
+        
+        .stats {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid rgba(160, 160, 255, 0.3);
+            backdrop-filter: blur(10px);
+            font-size: 1rem;
+            pointer-events: all;
+            z-index: 100;
+        }
+        
+        .stats div {
+            margin-bottom: 8px;
+        }
+        
+        .stats div:last-child {
+            margin-bottom: 0;
+        }
+        
+        .message {
+            position: absolute;
+            bottom: 50px;
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
+            max-width: 800px;
+            padding: 25px;
+            background: rgba(0, 0, 0, 0.8);
+            border-radius: 15px;
+            border: 1px solid rgba(160, 160, 255, 0.3);
+            backdrop-filter: blur(15px);
+            opacity: 0;
+            transition: opacity 1s ease;
+            pointer-events: all;
+            z-index: 200;
+        }
+        
+        .message.visible {
+            opacity: 1;
+        }
+        
+        .message h2 {
+            color: #ff6b6b;
+            margin-bottom: 15px;
+            font-size: 2rem;
+        }
+        
+        .message p {
+            line-height: 1.6;
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+        }
+        
+        .reset-btn {
+            margin-top: 20px;
+            padding: 15px 40px;
+            background: linear-gradient(135deg, #6060c0, #8080e0);
+            border: none;
+            border-radius: 30px;
+            color: white;
+            font-weight: bold;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .reset-btn:hover {
+            background: linear-gradient(135deg, #8080e0, #a0a0ff);
+            transform: scale(1.05);
+        }
+        
+        .controls {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid rgba(160, 160, 255, 0.3);
+            backdrop-filter: blur(10px);
+            pointer-events: all;
+            width: 280px;
+            z-index: 100;
+        }
+        
+        .control-group {
+            margin-bottom: 15px;
+        }
+        
+        .control-group:last-child {
+            margin-bottom: 0;
+        }
+        
+        .control-label {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 0.9rem;
+            color: #a0a0ff;
+        }
+        
+        .control-btn {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            background: rgba(160, 160, 255, 0.2);
+            border: 1px solid rgba(160, 160, 255, 0.5);
+            border-radius: 5px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .control-btn:hover {
+            background: rgba(160, 160, 255, 0.4);
+        }
+        
+        .control-btn:last-child {
+            margin-bottom: 0;
+        }
+        
+        .slider-container {
+            margin-top: 10px;
+        }
+        
+        .slider {
+            width: 100%;
+            height: 5px;
+            border-radius: 5px;
+            background: rgba(160, 160, 255, 0.3);
+            outline: none;
+            -webkit-appearance: none;
+        }
+        
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            background: #6060c0;
+            cursor: pointer;
+        }
+        
+        .slider::-moz-range-thumb {
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            background: #6060c0;
+            cursor: pointer;
+        }
+        
+        .slider-value {
+            display: inline-block;
+            margin-left: 10px;
+            color: #ff6b6b;
+            font-weight: bold;
+        }
+        
+        .info-panel {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid rgba(160, 160, 255, 0.3);
+            backdrop-filter: blur(10px);
+            max-width: 300px;
+            pointer-events: all;
+            z-index: 100;
+        }
+        
+        .info-panel h3 {
+            color: #ff6b6b;
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+        }
+        
+        .info-panel p {
+            font-size: 0.9rem;
+            line-height: 1.4;
+            margin-bottom: 10px;
+        }
+        
+        .info-panel p:last-child {
+            margin-bottom: 0;
+        }
+        
+        .toggle-info {
+            position: absolute;
+            top: 20px;
+            left: 340px;
+            background: rgba(0, 0, 0, 0.7);
+            border: 1px solid rgba(160, 160, 255, 0.3);
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            pointer-events: all;
+            transition: all 0.3s ease;
+            z-index: 100;
+        }
+        
+        .toggle-info:hover {
+            background: rgba(160, 160, 255, 0.3);
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        @keyframes heartbeat {
+            0% { transform: translate(-50%, -50%) scale(1); }
+            20% { transform: translate(-50%, -50%) scale(1.2); }
+            40% { transform: translate(-50%, -50%) scale(1); }
+            60% { transform: translate(-50%, -50%) scale(1.1); }
+            80% { transform: translate(-50%, -50%) scale(1); }
+            100% { transform: translate(-50%, -50%) scale(1); }
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.1); opacity: 0.5; }
+            100% { transform: scale(1.2); opacity: 0; }
+        }
+        
+        .loading {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+        
+        .loading-spinner {
+            width: 60px;
+            height: 60px;
+            border: 5px solid rgba(160, 160, 255, 0.3);
+            border-top: 5px solid #6060c0;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 20px;
+        }
+        
+        .loading-text {
+            font-size: 1.2rem;
+            color: #a0a0ff;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .simulation-info {
+            position: absolute;
+            top: 100px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid rgba(160, 160, 255, 0.3);
+            backdrop-filter: blur(10px);
+            max-width: 280px;
+            pointer-events: all;
+            z-index: 100;
+        }
+        
+        .simulation-info h3 {
+            color: #ff6b6b;
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+        }
+        
+        .simulation-info p {
+            font-size: 0.9rem;
+            line-height: 1.4;
+            margin-bottom: 10px;
+        }
+        
+        .simulation-info .stat {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+        
+        .simulation-info .stat-label {
+            color: #a0a0ff;
+            font-size: 0.85rem;
+        }
+        
+        .simulation-info .stat-value {
+            color: #ff6b6b;
+            font-weight: bold;
+            font-size: 0.85rem;
+        }
+        
+        .node-info {
+            position: absolute;
+            top: 300px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid rgba(160, 160, 255, 0.3);
+            backdrop-filter: blur(10px);
+            max-width: 280px;
+            pointer-events: all;
+            z-index: 100;
+        }
+        
+        .node-info h3 {
+            color: #ff6b6b;
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+        }
+        
+        .node-info p {
+            font-size: 0.9rem;
+            line-height: 1.4;
+            margin-bottom: 10px;
+        }
+        
+        .node-info .stat {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+        
+        .node-info .stat-label {
+            color: #a0a0ff;
+            font-size: 0.85rem;
+        }
+        
+        .node-info .stat-value {
+            color: #ff6b6b;
+            font-weight: bold;
+            font-size: 0.85rem;
+        }
+        
+        .time-progress {
+            position: absolute;
+            top: 200px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid rgba(160, 160, 255, 0.3);
+            backdrop-filter: blur(10px);
+            max-width: 280px;
+            pointer-events: all;
+            z-index: 100;
+        }
+        
+        .time-progress h3 {
+            color: #ff6b6b;
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+        }
+        
+        .time-progress-bar {
+            width: 100%;
+            height: 20px;
+            background: rgba(160, 160, 255, 0.2);
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+        
+        .time-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #6060c0, #ff6b6b);
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+        
+        .time-progress-text {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+        }
+        
+        .time-progress-text .start {
+            color: #a0a0ff;
+        }
+        
+        .time-progress-text .current {
+            color: #ff6b6b;
+            font-weight: bold;
+        }
+        
+        .time-progress-text .end {
+            color: #a0a0ff;
+        }
+        
+        .real-time-stats {
+            position: absolute;
+            top: 535px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid rgba(160, 160, 255, 0.3);
+            backdrop-filter: blur(10px);
+            max-width: 280px;
+            pointer-events: all;
+            z-index: 100;
+        }
+        
+        .real-time-stats h3 {
+            color: #ff6b6b;
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+        }
+        
+        .real-time-stats .stat {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+        
+        .real-time-stats .stat-label {
+            color: #a0a0ff;
+            font-size: 0.85rem;
+        }
+        
+        .real-time-stats .stat-value {
+            color: #ff6b6b;
+            font-weight: bold;
+            font-size: 0.85rem;
+        }
+        
+        .warning-banner {
+            position: absolute;
+            top: 50px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 107, 107, 0.2);
+            border: 1px solid rgba(255, 107, 107, 0.5);
+            border-radius: 10px;
+            padding: 10px 20px;
+            color: #ff6b6b;
+            font-weight: bold;
+            font-size: 1.2rem;
+            text-align: center;
+            max-width: 800px;
+            pointer-events: all;
+            z-index: 20;
+        }
+        
+        .damage-indicator {
+            position: absolute;
+            bottom: 180px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid rgba(160, 160, 255, 0.3);
+            backdrop-filter: blur(10px);
+            max-width: 300px;
+            pointer-events: all;
+            z-index: 100;
+        }
+        
+        .damage-indicator h3 {
+            color: #ff6b6b;
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+        }
+        
+        .damage-bar {
+            width: 100%;
+            height: 20px;
+            background: rgba(160, 160, 255, 0.2);
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+        
+        .damage-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #6060c0, #ff6b6b);
+            width: 0%;
+            transition: width 1s ease;
+        }
+        
+        .damage-text {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+        }
+        
+        .damage-text .current {
+            color: #ff6b6b;
+            font-weight: bold;
+        }
+        
+        .damage-text .max {
+            color: #a0a0ff;
+        }
+        
+        .performance-warning {
+            position: absolute;
+            top: 95px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 107, 107, 0.2);
+            border: 1px solid rgba(255, 107, 107, 0.5);
+            border-radius: 10px;
+            padding: 10px 20px;
+            color: #ff6b6b;
+            font-weight: bold;
+            font-size: 1rem;
+            text-align: center;
+            max-width: 600px;
+            pointer-events: all;
+            z-index: 20;
+            display: none;
+        }
+        
+        .popup-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            display: none;
+            z-index: 9999;
+            overflow-y: auto;
+        }
+        
+        .popup-overlay.visible {
+            display: block;
+        }
+        
+        .popup-container {
+            position: relative;
+            background: rgba(0, 0, 0, 0.9);
+            border: 3px solid #ff6b6b;
+            border-radius: 20px;
+            margin: 50px auto;
+            max-width: 1200px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 0 50px rgba(255, 107, 107, 0.5);
+        }
+        
+        .popup-header {
+            position: sticky;
+            top: 0;
+            background: rgba(0, 0, 0, 0.95);
+            padding: 20px 30px;
+            border-bottom: 2px solid #ff6b6b;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 10000;
+        }
+        
+        .popup-title {
+            color: #ff6b6b;
+            font-size: 2.5rem;
+            font-family: 'Dancing Script', cursive;
+        }
+        
+        .popup-close {
+            width: 50px;
+            height: 50px;
+            background: #ff6b6b;
+            border: none;
+            border-radius: 50%;
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .popup-close:hover {
+            background: #ff4757;
+            transform: scale(1.1);
+        }
+        
+        .popup-content {
+            padding: 30px;
+        }
+        
+        .popup-section {
+            margin-bottom: 40px;
+        }
+        
+        .popup-section h3 {
+            color: #a0a0ff;
+            font-size: 2rem;
+            margin-bottom: 20px;
+            border-bottom: 2px solid rgba(160, 160, 255, 0.3);
+            padding-bottom: 10px;
+        }
+        
+        .popup-section p {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            margin-bottom: 20px;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        
+        .stat-card {
+            background: rgba(160, 160, 255, 0.1);
+            border: 1px solid rgba(160, 160, 255, 0.3);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .stat-value {
+            font-size: 3rem;
+            color: #ff6b6b;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .stat-label {
+            font-size: 1.1rem;
+            color: #a0a0ff;
+        }
+        
+        .lesson-box {
+            background: rgba(255, 107, 107, 0.1);
+            border-left: 5px solid #ff6b6b;
+            padding: 25px;
+            margin: 30px 0;
+            border-radius: 0 15px 15px 0;
+        }
+        
+        .lesson-box h4 {
+            color: #ff6b6b;
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+        }
+        
+        .lesson-box ul {
+            margin-left: 25px;
+        }
+        
+        .lesson-box li {
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+            line-height: 1.6;
+        }
+        
+        .timeline {
+            position: relative;
+            margin: 40px 0;
+            padding-left: 40px;
+        }
+        
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 10px;
+            top: 0;
+            height: 100%;
+            width: 3px;
+            background: linear-gradient(to bottom, #ff6b6b, #6060c0);
+        }
+        
+        .timeline-item {
+            position: relative;
+            margin-bottom: 30px;
+        }
+        
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -35px;
+            top: 5px;
+            width: 20px;
+            height: 20px;
+            background: #ff6b6b;
+            border-radius: 50%;
+            box-shadow: 0 0 10px rgba(255, 107, 107, 0.5);
+        }
+        
+        .timeline-time {
+            color: #ff6b6b;
+            font-weight: bold;
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+        }
+        
+        .timeline-content {
+            font-size: 1.2rem;
+            line-height: 1.6;
+        }
+        
+        .quote {
+            font-style: italic;
+            text-align: center;
+            margin: 40px 0;
+            font-size: 1.5rem;
+            color: #a0a0ff;
+            padding: 20px;
+            border-left: 5px solid #a0a0ff;
+            border-right: 5px solid #a0a0ff;
+        }
+        
+        .popup-footer {
+            text-align: center;
+            padding: 30px;
+            border-top: 2px solid rgba(160, 160, 255, 0.3);
+        }
+        
+        .popup-btn {
+            padding: 15px 50px;
+            background: linear-gradient(135deg, #6060c0, #8080e0);
+            border: none;
+            border-radius: 30px;
+            color: white;
+            font-weight: bold;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 0 10px;
+        }
+        
+        .popup-btn:hover {
+            background: linear-gradient(135deg, #8080e0, #a0a0ff);
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+    <div class="loading" id="loading">
+        <div class="loading-spinner"></div>
+        <div class="loading-text">Initializing Real ILOVEYOU Attack Simulation...</div>
+    </div>
+    
+    <div id="canvas-container"></div>
+    
+    <div class="ui-overlay">
+        <h1 class="title">ILOVEYOU</h1>
+        <p class="subtitle">The Real $10 Billion Cyber Attack - May 4, 2000</p>
+        
+        <div class="warning-banner" id="warningBanner">
+            ⚠️ SIMULATION BASED ON REAL DATA: 10 million computers, $10 billion damage, 10 hours
+        </div>
+        
+        <div class="performance-warning" id="performanceWarning">
+            ⚠️ High node count may impact performance. Consider reducing nodes for smoother experience.
+        </div>
+        
+        <div class="heart-container" id="heartContainer">
+            <div class="heart" id="heart">❤️</div>
+            <div class="heart-text">Click to infect</div>
+        </div>
+        
+        <div class="stats" id="stats">
+            <div>Nodes: <span id="peopleCount">0</span></div>
+            <div>Computers: <span id="computerCount">0</span></div>
+            <div>Connections: <span id="connectionCount">0</span></div>
+            <div>Infected Nodes: <span id="infectedCount">0</span> (<span id="infectedPercent">0</span>%)</div>
+            <div>Infected Computers: <span id="infectedComputers">0</span></div>
+            <div>Infection Rate: <span id="infectionRate">0</span>/sec</div>
+            <div>Time Elapsed: <span id="timeElapsed">0:00</span></div>
+        </div>
+        
+        <div class="damage-indicator" id="damageIndicator">
+            <h3>Damage Cost</h3>
+            <div class="damage-bar">
+                <div class="damage-fill" id="damageFill"></div>
+            </div>
+            <div class="damage-text">
+                <span class="current" id="damageCurrent">$0</span>
+                <span class="max" id="damageMax">$10 billion</span>
+            </div>
+        </div>
+        
+        <div class="simulation-info" id="simulationInfo">
+            <h3>Real Attack Data</h3>
+            <div class="stat">
+                <span class="stat-label">Date:</span>
+                <span class="stat-value">May 4, 2000</span>
+            </div>
+            <div class="stat">
+                <span class="stat-label">Duration:</span>
+                <span class="stat-value">10 hours</span>
+            </div>
+            <div class="stat">
+                <span class="stat-label">Total Damage:</span>
+                <span class="stat-value" id="estimatedCost">$10 billion</span>
+            </div>
+            <div class="stat">
+                <span class="stat-label">Computers Targeted:</span>
+                <span class="stat-value" id="targetedComputers">10 million</span>
+            </div>
+            <div class="stat">
+                <span class="stat-label">Infection Speed:</span>
+                <span class="stat-value" id="infectionSpeed">Real-time</span>
+            </div>
+        </div>
+        
+        <div class="time-progress" id="timeProgress">
+            <h3>Attack Progress</h3>
+            <div class="time-progress-bar">
+                <div class="time-progress-fill" id="timeProgressFill"></div>
+            </div>
+            <div class="time-progress-text">
+                <span class="start">0:00</span>
+                <span class="current" id="progressCurrent">0:00</span>
+                <span class="end">10:00</span>
+            </div>
+        </div>
+        
+        <div class="node-info" id="nodeInfo">
+            <h3>Node Information</h3>
+            <p>Each node represents a network segment containing approximately 200 computers.</p>
+            <div class="stat">
+                <span class="stat-label">Computers per Node:</span>
+                <span class="stat-value">200</span>
+            </div>
+            <div class="stat">
+                <span class="stat-label">Max Nodes:</span>
+                <span class="stat-value">5000</span>
+            </div>
+            <div class="stat">
+                <span class="stat-label">Total Capacity:</span>
+                <span class="stat-value">1 million</span>
+            </div>
+        </div>
+        
+        <div class="real-time-stats" id="realTimeStats">
+            <h3>Real-time Impact</h3>
+            <div class="stat">
+                <span class="stat-label">Damage Cost:</span>
+                <span class="stat-value" id="damageCost">$0</span>
+            </div>
+            <div class="stat">
+                <span class="stat-label">Businesses Affected:</span>
+                <span class="stat-value" id="businessesAffected">0</span>
+            </div>
+            <div class="stat">
+                <span class="stat-label">Countries Reached:</span>
+                <span class="stat-value" id="countriesReached">0</span>
+            </div>
+        </div>
+        
+        <div class="info-panel" id="infoPanel">
+            <h3>About This Visualization</h3>
+            <p>This is a real-time simulation of the ILOVEYOU virus attack that infected 10 million computers in 10 hours, causing $10 billion in damages worldwide.</p>
+            <p>Click the heart to start the infection. Watch how the virus spread globally through email systems.</p>
+        </div>
+        
+        <div class="toggle-info" id="toggleInfo">?</div>
+        
+        <div class="controls">
+            <div class="control-group">
+                <button class="control-btn" id="toggleConnections">Hide Connections</button>
+                <button class="control-btn" id="toggleRotation">Stop Rotation</button>
+            </div>
+            
+            <div class="control-group">
+                <label class="control-label">Network Nodes</label>
+                <div class="slider-container">
+                    <input type="range" min="100" max="5000" value="500" step="100" class="slider" id="peopleSlider">
+                    <span class="slider-value" id="peopleSliderValue">500</span>
+                </div>
+            </div>
+            
+            <div class="control-group">
+                <label class="control-label">Connection Density</label>
+                <div class="slider-container">
+                    <input type="range" min="3" max="6" value="5" class="slider" id="densitySlider">
+                    <span class="slider-value" id="densitySliderValue">5</span>
+                </div>
+            </div>
+            
+            <div class="control-group">
+                <label class="control-label">Simulation Speed</label>
+                <div class="slider-container">
+                    <input type="range" min="1" max="10" value="1" class="slider" id="speedSlider">
+                    <span class="slider-value" id="speedSliderValue">1x</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="message" id="message">
+            <h2>The ILOVEYOU Attack Completed</h2>
+            <p>In just 10 hours, the ILOVEYOU virus infected millions of computers across the globe, causing billions in damages.</p>
+            <p>This simulation shows how a simple email attachment could become one of the most devastating cyberattacks in history.</p>
+            <button class="reset-btn" id="resetBtn">Reset Experience</button>
+            <button class="reset-btn" id="detailsBtn">View Attack Details</button>
+        </div>
+    </div>
+    
+    <div class="popup-overlay" id="popupOverlay">
+        <div class="popup-container">
+            <div class="popup-header">
+                <h2 class="popup-title">ILOVEYOU Virus: A Historical Cybersecurity Disaster</h2>
+                <button class="popup-close" id="popupClose">×</button>
+            </div>
+            <div class="popup-content">
+                <div class="popup-section">
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-value">10M</div>
+                            <div class="stat-label">Computers Infected</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value">$10B</div>
+                            <div class="stat-label">Financial Damage</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value">10H</div>
+                            <div class="stat-label">Global Spread Time</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value">20+</div>
+                            <div class="stat-label">Countries Affected</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="popup-section">
+                    <h3>The Origin of the Attack</h3>
+                    <p>The ILOVEYOU virus was created by <strong>Onel de Guzman</strong>, a 24-year-old Filipino computer programming student. The virus originated in Manila, Philippines, and quickly spread across the globe through email systems. De Guzman claimed he created the virus to steal internet access passwords, as he couldn't afford to pay for internet access.</p>
+                </div>
+                
+                <div class="popup-section">
+                    <h3>Attack Timeline</h3>
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-time">May 4, 2000 - Morning</div>
+                            <div class="timeline-content">The virus first appeared in Hong Kong and quickly spread to Europe and North America.</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-time">May 4, 2000 - Afternoon</div>
+                            <div class="timeline-content">Major corporations and government agencies began shutting down their email systems to contain the spread.</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-time">May 4, 2000 - Evening</div>
+                            <div class="timeline-content">The virus had already infected millions of computers worldwide, causing unprecedented damage.</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-time">May 5, 2000</div>
+                            <div class="timeline-content">Antivirus companies released updates to detect and remove the virus, but the damage was already done.</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-time">May 11, 2000</div>
+                            <div class="timeline-content">Philippine authorities identified Onel de Guzman as the creator of the virus, but couldn't charge him due to lack of cybercrime laws.</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="popup-section">
+                    <h3>The Technical Mechanism</h3>
+                    <p>The ILOVEYOU virus was a Visual Basic Script (VBS) worm that spread through email with the subject line "ILOVEYOU" and an attachment "LOVE-LETTER-FOR-YOU.txt.vbs". When users opened the attachment, the script would:</p>
+                    <ul>
+                        <li>Overwrite files on the victim's computer, replacing them with copies of itself</li>
+                        <li>Steal passwords and send them to the virus creator's email address</li>
+                        <li>Mail itself to all contacts in the victim's Outlook address book</li>
+                        <li>Download and install a password-stealing program called WIN-BUGSFIX.EXE</li>
+                    </ul>
+                </div>
+                
+                <div class="popup-section">
+                    <h3>The Global Impact</h3>
+                    <p>The ILOVEYOU virus affected millions of computers worldwide, causing an estimated <strong>$10 billion</strong> in damages. Major organizations affected included:</p>
+                    <ul>
+                        <li><strong>The Pentagon</strong> - Had to shut down its email system for hours</li>
+                        <li><strong>British Parliament</strong> - Suffered massive disruptions to its communication systems</li>
+                        <li><strong>Ford Motor Company</strong> - Had to shut down email communications worldwide</li>
+                        <li><strong>Siemens AG</strong> - Experienced significant system disruptions</li>
+                        <li><strong>Microsoft</strong> - Had to temporarily shut down its internal email system</li>
+                    </ul>
+                </div>
+                
+                <div class="popup-section">
+                    <h3>The Human Factor</h3>
+                    <p>What made the ILOVEYOU virus so successful was its exploitation of human psychology. The virus preyed on people's desire for connection and love, using a subject line that was difficult to resist. This psychological manipulation, combined with the fact that the virus often came from someone the victim knew, made it incredibly effective.</p>
+                    <p>The attack demonstrated that the weakest link in cybersecurity is often not the technology itself, but the human element. Our curiosity, trust, and emotional responses can be manipulated to bypass even the most sophisticated security measures.</p>
+                </div>
+                
+                <div class="lesson-box">
+                    <h4>Cybersecurity Lessons from ILOVEYOU</h4>
+                    <ul>
+                        <li><strong>Human Firewall:</strong> The most effective cybersecurity measure is educating users to recognize and avoid potential threats.</li>
+                        <li><strong>Emotional Manipulation:</strong> Be aware that cyberattacks often exploit emotional triggers like fear, curiosity, love, or urgency.</li>
+                        <li><strong>File Extensions:</strong> Never open files with double extensions like ".txt.vbs" which hide their true nature.</li>
+                        <li><strong>Regular Updates:</strong> Keep your operating system and antivirus software updated to protect against known vulnerabilities.</li>
+                        <li><strong>Backup Important Data:</strong> Regularly backup important files to protect against ransomware and other destructive attacks.</li>
+                        <li><strong>Think Before You Click:</strong> Always verify the sender and be cautious with unexpected attachments, even from known contacts.</li>
+                    </ul>
+                </div>
+                
+                <div class="popup-section">
+                    <h3>The Legal Aftermath</h3>
+                    <p>Despite the massive damage caused by the ILOVEYOU virus, creator Onel de Guzman was never charged with a crime. At the time, the Philippines had no laws against computer hacking or malware creation. This legal loophole highlighted the need for comprehensive cybersecurity legislation worldwide.</p>
+                    <p>In response to the attack, the Philippines passed the E-Commerce Act in June 2000, which included provisions criminalizing computer hacking and malware creation. Similar laws were enacted in many other countries to address the growing threat of cybercrime.</p>
+                </div>
+                
+                <div class="popup-section">
+                    <h3>Protecting Yourself in the Digital Age</h3>
+                    <p>As cyber threats continue to evolve, protecting yourself requires a combination of technical measures and good security practices:</p>
+                    <ul>
+                        <li><strong>Use Strong, Unique Passwords:</strong> Use a different password for each account and consider using a password manager.</li>
+                        <li><strong>Enable Two-Factor Authentication:</strong> Add an extra layer of security to your accounts.</li>
+                        <li><strong>Be Skeptical of Unsolicited Emails:</strong> Even if an email appears to be from someone you know, verify its authenticity before opening attachments or clicking links.</li>
+                        <li><strong>Keep Software Updated:</strong> Regular updates patch security vulnerabilities that attackers exploit.</li>
+                        <li><strong>Educate Yourself and Others:</strong> Stay informed about the latest cybersecurity threats and share knowledge with friends, family, and colleagues.</li>
+                    </ul>
+                </div>
+                
+                <div class="quote">
+                    "The ILOVEYOU virus taught us that the most sophisticated security systems can be bypassed by exploiting human nature. It's a lesson we're still learning today."
+                </div>
+            </div>
+            
+            <div class="popup-footer">
+                <button class="popup-btn" id="popupResetBtn">Reset Simulation</button>
+                <button class="popup-btn" id="popupCloseBtn">Close</button>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Configuration basée sur les vrais chiffres
+            const COMPUTERS_PER_NODE = 200;
+            const MAX_COMPUTERS = 10000000;
+            const MAX_NODES = 5000;
+            const TOTAL_DAMAGE = 10000000000;
+            const ATTACK_DURATION_HOURS = 10;
+            const MIN_SIMULATION_DURATION = 15; // Durée minimale de la simulation en secondes
+            
+            let PEOPLE_COUNT = 500;
+            let CONNECTION_DENSITY = 5;
+            let CONNECTION_DISTANCE = 100;
+            let SIMULATION_SPEED = 1;
+            const INFECTION_PARTICLE_LIMIT = 50;
+            
+            // Éléments DOM
+            const loading = document.getElementById('loading');
+            const canvasContainer = document.getElementById('canvas-container');
+            const heartContainer = document.getElementById('heartContainer');
+            const heart = document.getElementById('heart');
+            const message = document.getElementById('message');
+            const resetBtn = document.getElementById('resetBtn');
+            const detailsBtn = document.getElementById('detailsBtn');
+            const popupOverlay = document.getElementById('popupOverlay');
+            const popupClose = document.getElementById('popupClose');
+            const popupCloseBtn = document.getElementById('popupCloseBtn');
+            const popupResetBtn = document.getElementById('popupResetBtn');
+            const infoPanel = document.getElementById('infoPanel');
+            const toggleInfo = document.getElementById('toggleInfo');
+            const peopleSlider = document.getElementById('peopleSlider');
+            const peopleSliderValue = document.getElementById('peopleSliderValue');
+            const densitySlider = document.getElementById('densitySlider');
+            const densitySliderValue = document.getElementById('densitySliderValue');
+            const speedSlider = document.getElementById('speedSlider');
+            const speedSliderValue = document.getElementById('speedSliderValue');
+            const simulationInfo = document.getElementById('simulationInfo');
+            const nodeInfo = document.getElementById('nodeInfo');
+            const timeProgress = document.getElementById('timeProgress');
+            const timeProgressFill = document.getElementById('timeProgressFill');
+            const progressCurrent = document.getElementById('progressCurrent');
+            const realTimeStats = document.getElementById('realTimeStats');
+            const damageIndicator = document.getElementById('damageIndicator');
+            const damageFill = document.getElementById('damageFill');
+            const damageCurrent = document.getElementById('damageCurrent');
+            const damageMax = document.getElementById('damageMax');
+            const performanceWarning = document.getElementById('performanceWarning');
+            const stats = {
+                peopleCount: document.getElementById('peopleCount'),
+                computerCount: document.getElementById('computerCount'),
+                connectionCount: document.getElementById('connectionCount'),
+                infectedCount: document.getElementById('infectedCount'),
+                infectedPercent: document.getElementById('infectedPercent'),
+                infectedComputers: document.getElementById('infectedComputers'),
+                infectionRate: document.getElementById('infectionRate'),
+                timeElapsed: document.getElementById('timeElapsed')
+            };
+            const realTimeStatsValues = {
+                damageCost: document.getElementById('damageCost'),
+                businessesAffected: document.getElementById('businessesAffected'),
+                countriesReached: document.getElementById('countriesReached')
+            };
+            const simulationStats = {
+                estimatedCost: document.getElementById('estimatedCost'),
+                targetedComputers: document.getElementById('targetedComputers'),
+                infectionSpeed: document.getElementById('infectionSpeed')
+            };
+            const controls = {
+                toggleConnections: document.getElementById('toggleConnections'),
+                toggleRotation: document.getElementById('toggleRotation')
+            };
+            
+            // Variables Three.js
+            let scene, camera, renderer, orbitControls;
+            let people = [];
+            let connections = [];
+            let peopleObjects = [];
+            let connectionObjects = [];
+            let infectedPeople = new Set();
+            let isInfected = false;
+            let showConnections = true;
+            let autoRotate = true;
+            let mouseX = 0, mouseY = 0;
+            let targetRotationX = 0, targetRotationY = 0;
+            let infectionStartTime = 0;
+            let lastInfectedCount = 0;
+            let lastInfectionTime = 0;
+            let particles = [];
+            let particleSystem;
+            let infectionParticles = [];
+            let particlePool = [];
+            let simulationTimer = 0;
+            let simulatedTime = 0;
+            let lastTime = 0;
+            let simulationComplete = false;
+            let lastUpdateTime = 0;
+            let popupShown = false;
+            let infectionStagnationTimer = 0;
+            let lastInfectionCheckTime = 0;
+            let randomInfectionTimer = 0;
+            let lastRandomInfectionTime = 0;
+            let infectionProgress = 0;
+            let infectionSpeedFactor = 1.0;
+            let multipleInfectionPoints = [];
+            let infectionQueue = []; // File d'attente pour les infections
+            let isProcessingInfection = false; // Verrou pour éviter les infections simultanées
+            let minimumDelayBetweenInfections = 0; // Délai minimum entre les infections
+            
+            // Initialiser Three.js
+            function initThree() {
+                scene = new THREE.Scene();
+                scene.fog = new THREE.FogExp2(0x000000, 0.0008);
+                
+                camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 2000);
+                camera.position.z = 800;
+                
+                renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+                renderer.setSize(window.innerWidth, window.innerHeight);
+                renderer.setPixelRatio(window.devicePixelRatio);
+                canvasContainer.appendChild(renderer.domElement);
+                
+                orbitControls = new THREE.OrbitControls(camera, renderer.domElement);
+                orbitControls.enableDamping = true;
+                orbitControls.dampingFactor = 0.05;
+                orbitControls.screenSpacePanning = false;
+                orbitControls.minDistance = 100;
+                orbitControls.maxDistance = 1500;
+                
+                const ambientLight = new THREE.AmbientLight(0x404040, 1.5);
+                scene.add(ambientLight);
+                
+                const pointLight = new THREE.PointLight(0xff6b6b, 1, 1000);
+                pointLight.position.set(0, 0, 500);
+                scene.add(pointLight);
+                
+                const pointLight2 = new THREE.PointLight(0x6060c0, 1, 1000);
+                pointLight2.position.set(0, 0, -500);
+                scene.add(pointLight2);
+                
+                window.addEventListener('resize', onWindowResize);
+                document.addEventListener('mousemove', onMouseMove);
+                
+                controls.toggleConnections.addEventListener('click', () => {
+                    showConnections = !showConnections;
+                    controls.toggleConnections.textContent = showConnections ? 'Hide Connections' : 'Show Connections';
+                    connectionObjects.forEach(obj => obj.visible = showConnections);
+                });
+                
+                controls.toggleRotation.addEventListener('click', () => {
+                    autoRotate = !autoRotate;
+                    controls.toggleRotation.textContent = autoRotate ? 'Stop Rotation' : 'Auto Rotation';
+                });
+                
+                peopleSlider.addEventListener('input', (e) => {
+                    PEOPLE_COUNT = parseInt(e.target.value);
+                    peopleSliderValue.textContent = PEOPLE_COUNT.toLocaleString();
+                    
+                    if (PEOPLE_COUNT > 3000) {
+                        performanceWarning.style.display = 'block';
+                    } else {
+                        performanceWarning.style.display = 'none';
+                    }
+                    
+                    resetHeart();
+                    updateSimulationInfo();
+                    createNetwork();
+                });
+                
+                densitySlider.addEventListener('input', (e) => {
+                    CONNECTION_DENSITY = parseInt(e.target.value);
+                    densitySliderValue.textContent = CONNECTION_DENSITY;
+                    
+                    resetHeart();
+                    createNetwork();
+                });
+                
+                speedSlider.addEventListener('input', (e) => {
+                    SIMULATION_SPEED = parseInt(e.target.value);
+                    speedSliderValue.textContent = SIMULATION_SPEED + 'x';
+                });
+                
+                heartContainer.addEventListener('click', startInfection);
+                resetBtn.addEventListener('click', resetExperience);
+                detailsBtn.addEventListener('click', () => {
+                    popupOverlay.classList.add('visible');
+                });
+                
+                popupClose.addEventListener('click', closePopup);
+                popupCloseBtn.addEventListener('click', closePopup);
+                popupResetBtn.addEventListener('click', () => {
+                    closePopup();
+                    resetExperience();
+                });
+                
+                popupOverlay.addEventListener('click', (e) => {
+                    if (e.target === popupOverlay) {
+                        closePopup();
+                    }
+                });
+                
+                toggleInfo.addEventListener('click', () => {
+                    infoPanel.classList.toggle('hidden');
+                });
+                
+                initParticleSystem();
+                initInfectionParticlePool();
+                updateSimulationInfo();
+                
+                setTimeout(() => {
+                    loading.style.display = 'none';
+                }, 1000);
+            }
+            
+            function closePopup() {
+                popupOverlay.classList.remove('visible');
+            }
+            
+            function resetHeart() {
+                heart.style.opacity = '1';
+                heart.style.animation = 'heartbeat 1.5s infinite';
+                heart.style.transform = 'translate(-50%, -50%) scale(1)';
+            }
+            
+            function updateSimulationInfo() {
+                const totalComputers = PEOPLE_COUNT * COMPUTERS_PER_NODE;
+                stats.computerCount.textContent = totalComputers.toLocaleString();
+                simulationStats.targetedComputers.textContent = totalComputers.toLocaleString();
+                simulationStats.estimatedCost.textContent = "$10 billion";
+                damageMax.textContent = "$10 billion";
+                
+                // Calculer le délai minimum entre les infections pour garantir 15 secondes
+                minimumDelayBetweenInfections = (MIN_SIMULATION_DURATION * 1000) / PEOPLE_COUNT;
+            }
+            
+            function initParticleSystem() {
+                const particleCount = 800;
+                const particles = new THREE.BufferGeometry();
+                const positions = new Float32Array(particleCount * 3);
+                const colors = new Float32Array(particleCount * 3);
+                const sizes = new Float32Array(particleCount);
+                
+                for (let i = 0; i < particleCount; i++) {
+                    const i3 = i * 3;
+                    positions[i3] = (Math.random() - 0.5) * 3000;
+                    positions[i3 + 1] = (Math.random() - 0.5) * 3000;
+                    positions[i3 + 2] = (Math.random() - 0.5) * 3000;
+                    
+                    colors[i3] = 0.9 + Math.random() * 0.1;
+                    colors[i3 + 1] = 0.9 + Math.random() * 0.1;
+                    colors[i3 + 2] = 0.9 + Math.random() * 0.1;
+                    
+                    sizes[i] = Math.random() * 4 + 2;
+                }
+                
+                particles.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+                particles.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+                particles.setAttribute('size', new THREE.BufferAttribute(sizes, 1));
+                
+                const particleMaterial = new THREE.PointsMaterial({
+                    size: 3,
+                    vertexColors: true,
+                    transparent: true,
+                    opacity: 0.9,
+                    sizeAttenuation: true,
+                    blending: THREE.AdditiveBlending
+                });
+                
+                particleSystem = new THREE.Points(particles, particleMaterial);
+                scene.add(particleSystem);
+            }
+            
+            function initInfectionParticlePool() {
+                const geometry = new THREE.SphereGeometry(1.5, 8, 8);
+                
+                for (let i = 0; i < INFECTION_PARTICLE_LIMIT; i++) {
+                    const material = new THREE.MeshBasicMaterial({
+                        color: 0xff8e8e,
+                        transparent: true,
+                        opacity: 0
+                    });
+                    
+                    const particle = new THREE.Mesh(geometry, material);
+                    particle.visible = false;
+                    scene.add(particle);
+                    particlePool.push({
+                        mesh: particle,
+                        active: false,
+                        progress: 0,
+                        curve: null
+                    });
+                }
+            }
+            
+            function createNetwork() {
+                peopleObjects.forEach(obj => scene.remove(obj));
+                connectionObjects.forEach(obj => scene.remove(obj));
+                people = [];
+                connections = [];
+                peopleObjects = [];
+                connectionObjects = [];
+                infectedPeople.clear();
+                isInfected = false;
+                simulationComplete = false;
+                popupShown = false;
+                infectionStagnationTimer = 0;
+                lastInfectionCheckTime = 0;
+                randomInfectionTimer = 0;
+                lastRandomInfectionTime = 0;
+                infectionProgress = 0;
+                multipleInfectionPoints = [];
+                infectionQueue = [];
+                isProcessingInfection = false;
+                
+                CONNECTION_DISTANCE = 120 + (2000 / PEOPLE_COUNT) * 30;
+                
+                const geometry = new THREE.SphereGeometry(2.5, 8, 8);
+                const material = new THREE.MeshBasicMaterial({
+                    color: 0x9933ff,
+                    transparent: false,
+                    opacity: 1
+                });
+                
+                for (let i = 0; i < PEOPLE_COUNT; i++) {
+                    const radius = 400 + Math.random() * 200;
+                    const phi = Math.acos(-1 + (2 * i) / PEOPLE_COUNT);
+                    const theta = Math.sqrt(PEOPLE_COUNT * Math.PI) * phi;
+                    
+                    const x = radius * Math.cos(theta) * Math.sin(phi);
+                    const y = radius * Math.sin(theta) * Math.sin(phi);
+                    const z = radius * Math.cos(phi);
+                    
+                    const person = new THREE.Mesh(geometry, material.clone());
+                    person.position.set(x, y, z);
+                    scene.add(person);
+                    
+                    people.push({
+                        mesh: person,
+                        position: new THREE.Vector3(x, y, z),
+                        infected: false,
+                        id: i,
+                        infectionTime: 0
+                    });
+                    
+                    peopleObjects.push(person);
+                }
+                
+                const lineMaterial = new THREE.LineBasicMaterial({
+                    color: 0x6060c0,
+                    transparent: true,
+                    opacity: 0.2
+                });
+                
+                for (let i = 0; i < PEOPLE_COUNT; i++) {
+                    const distances = [];
+                    for (let j = i + 1; j < PEOPLE_COUNT; j++) {
+                        const dx = people[i].position.x - people[j].position.x;
+                        const dy = people[i].position.y - people[j].position.y;
+                        const dz = people[i].position.z - people[j].position.z;
+                        const distance = Math.sqrt(dx*dx + dy*dy + dz*dz);
+                        
+                        if (distance < CONNECTION_DISTANCE) {
+                            distances.push({index: j, distance});
+                        }
+                    }
+                    
+                    distances.sort((a, b) => a.distance - b.distance);
+                    const closestPeople = distances.slice(0, CONNECTION_DENSITY);
+                    
+                    for (const person of closestPeople) {
+                        const start = people[i].position.clone();
+                        const end = people[person.index].position.clone();
+                        const mid = new THREE.Vector3().addVectors(start, end).multiplyScalar(0.5);
+                        
+                        const curve = new THREE.QuadraticBezierCurve3(
+                            start,
+                            mid.clone().add(new THREE.Vector3(
+                                (Math.random() - 0.5) * 50,
+                                (Math.random() - 0.5) * 50,
+                                (Math.random() - 0.5) * 50
+                            )),
+                            end
+                        );
+                        
+                        const points = curve.getPoints(20);
+                        const geometry = new THREE.BufferGeometry().setFromPoints(points);
+                        
+                        const line = new THREE.Line(geometry, lineMaterial.clone());
+                        scene.add(line);
+                        
+                        connections.push({
+                            line: line,
+                            curve: curve,
+                            from: i,
+                            to: person.index,
+                            active: false
+                        });
+                        
+                        connectionObjects.push(line);
+                    }
+                }
+                
+                updateStats();
+            }
+            
+            function startInfection() {
+                if (isInfected) return;
+                
+                isInfected = true;
+                infectionStartTime = Date.now();
+                lastInfectedCount = 0;
+                lastInfectionTime = infectionStartTime;
+                simulatedTime = 0;
+                lastTime = performance.now();
+                lastUpdateTime = 0;
+                simulationComplete = false;
+                popupShown = false;
+                infectionStagnationTimer = 0;
+                lastInfectionCheckTime = Date.now();
+                randomInfectionTimer = 0;
+                lastRandomInfectionTime = Date.now();
+                infectionProgress = 0;
+                multipleInfectionPoints = [];
+                infectionQueue = [];
+                isProcessingInfection = false;
+                
+                heart.style.opacity = '0.1';
+                heart.style.animation = 'none';
+                heart.style.transform = 'translate(-50%, -50%) scale(1.5)';
+                
+                // Commencer avec un seul point d'infection
+                const randomIndex = Math.floor(Math.random() * people.length);
+                multipleInfectionPoints.push(randomIndex);
+                
+                // Ajouter la première infection à la file d'attente avec un délai initial
+                setTimeout(() => {
+                    addToInfectionQueue(randomIndex);
+                }, 1000);
+            }
+            
+            function addToInfectionQueue(personIndex) {
+                if (infectedPeople.has(personIndex)) return;
+                
+                infectionQueue.push(personIndex);
+                
+                // Si aucune infection n'est en cours, traiter la file
+                if (!isProcessingInfection) {
+                    processInfectionQueue();
+                }
+            }
+            
+            function processInfectionQueue() {
+                if (infectionQueue.length === 0) {
+                    isProcessingInfection = false;
+                    return;
+                }
+                
+                isProcessingInfection = true;
+                const personIndex = infectionQueue.shift();
+                
+                // Traiter cette infection
+                infectPerson(personIndex);
+                
+                // Planifier le traitement de la prochaine infection avec le délai minimum
+                setTimeout(() => {
+                    processInfectionQueue();
+                }, minimumDelayBetweenInfections / SIMULATION_SPEED);
+            }
+            
+            function infectPerson(personIndex) {
+                if (infectedPeople.has(personIndex)) return;
+                
+                infectedPeople.add(personIndex);
+                people[personIndex].infected = true;
+                people[personIndex].infectionTime = Date.now();
+                
+                people[personIndex].mesh.material.color.set(0xff6b6b);
+                
+                connections.forEach(conn => {
+                    if (conn.from === personIndex && !infectedPeople.has(conn.to)) {
+                        conn.active = true;
+                        conn.line.material.color.set(0xff6b6b);
+                        conn.line.material.opacity = 0.6;
+                        
+                        createInfectionParticle(people[personIndex].position, people[conn.to].position, conn.curve);
+                        
+                        // Ajouter le nœud suivant à la file d'attente
+                        addToInfectionQueue(conn.to);
+                    }
+                });
+                
+                updateStats();
+                
+                // Vérifier si la simulation est terminée
+                if (infectedPeople.size >= PEOPLE_COUNT || simulatedTime >= ATTACK_DURATION_HOURS * 3600) {
+                    // S'assurer que la simulation dure au moins 15 secondes
+                    const elapsedTime = (Date.now() - infectionStartTime) / 1000;
+                    if (elapsedTime >= MIN_SIMULATION_DURATION) {
+                        completeSimulation();
+                    } else {
+                        // Attendre le temps restant pour atteindre 15 secondes
+                        setTimeout(() => {
+                            completeSimulation();
+                        }, (MIN_SIMULATION_DURATION - elapsedTime) * 1000);
+                    }
+                }
+            }
+            
+            function infectRandomPerson() {
+                const uninfectedPeople = people
+                    .map((person, index) => ({ index, person }))
+                    .filter(item => !infectedPeople.has(item.index));
+                
+                if (uninfectedPeople.length === 0) return;
+                
+                const randomIndex = Math.floor(Math.random() * uninfectedPeople.length);
+                const personToInfect = uninfectedPeople[randomIndex];
+                
+                // Ajouter à la file d'attente au lieu d'infecter directement
+                addToInfectionQueue(personToInfect.index);
+                
+                // Réduire la probabilité d'infections multiples
+                if (Math.random() < 0.2 && uninfectedPeople.length > 1) {
+                    setTimeout(() => {
+                        infectRandomPerson();
+                    }, 2000 / SIMULATION_SPEED);
+                }
+            }
+            
+            function completeSimulation() {
+                if (simulationComplete) return;
+                
+                simulationComplete = true;
+                simulatedTime = ATTACK_DURATION_HOURS * 3600;
+                
+                resetHeart();
+                updateStats();
+                showMessage();
+            }
+            
+            function showMessage() {
+                message.classList.add('visible');
+            }
+            
+            function createInfectionParticle(from, to, curve) {
+                let particleData = null;
+                for (let i = 0; i < particlePool.length; i++) {
+                    if (!particlePool[i].active) {
+                        particleData = particlePool[i];
+                        break;
+                    }
+                }
+                
+                if (!particleData) return;
+                
+                particleData.active = true;
+                particleData.progress = 0;
+                particleData.curve = curve;
+                particleData.mesh.visible = true;
+                particleData.mesh.material.opacity = 1;
+                particleData.mesh.position.copy(from);
+            }
+            
+            function updateInfectionParticles() {
+                for (let i = 0; i < particlePool.length; i++) {
+                    const particleData = particlePool[i];
+                    
+                    if (particleData.active) {
+                        particleData.progress += 0.02 * SIMULATION_SPEED;
+                        
+                        if (particleData.progress <= 1) {
+                            particleData.mesh.position.copy(particleData.curve.getPoint(particleData.progress));
+                            particleData.mesh.material.opacity = 1 - particleData.progress;
+                            particleData.mesh.scale.setScalar(1 + particleData.progress);
+                        } else {
+                            particleData.active = false;
+                            particleData.mesh.visible = false;
+                        }
+                    }
+                }
+            }
+            
+            function updateStats() {
+                stats.peopleCount.textContent = PEOPLE_COUNT.toLocaleString();
+                stats.connectionCount.textContent = connections.length.toLocaleString();
+                stats.infectedCount.textContent = infectedPeople.size.toLocaleString();
+                
+                const infectionPercent = (infectedPeople.size / people.length) * 100;
+                const adjustedPercent = Math.min(100, infectionPercent);
+                stats.infectedPercent.textContent = Math.round(adjustedPercent);
+                
+                const infectedComputers = simulationComplete 
+                    ? MAX_COMPUTERS 
+                    : Math.floor(MAX_COMPUTERS * (infectionPercent / 100));
+                stats.infectedComputers.textContent = infectedComputers.toLocaleString();
+                
+                if (isInfected && infectedPeople.size > lastInfectedCount) {
+                    const currentTime = Date.now();
+                    const timeDiff = (currentTime - lastInfectionTime) / 1000;
+                    const infectionDiff = infectedPeople.size - lastInfectedCount;
+                    
+                    if (timeDiff > 0) {
+                        const infectionRate = (infectionDiff / timeDiff).toFixed(1);
+                        stats.infectionRate.textContent = infectionRate;
+                    }
+                    
+                    lastInfectedCount = infectedPeople.size;
+                    lastInfectionTime = currentTime;
+                    infectionStagnationTimer = 0;
+                } else if (!isInfected) {
+                    stats.infectionRate.textContent = "0";
+                }
+                
+                if (isInfected) {
+                    const elapsedTime = (Date.now() - infectionStartTime) / 1000;
+                    const elapsed = simulationComplete ? ATTACK_DURATION_HOURS * 3600 : Math.floor(simulatedTime);
+                    const hours = Math.floor(elapsed / 3600);
+                    const minutes = Math.floor((elapsed % 3600) / 60);
+                    const seconds = elapsed % 60;
+                    stats.timeElapsed.textContent = `${hours}:${minutes.toString().padStart(2, '0')}`;
+                    progressCurrent.textContent = `${hours}:${minutes.toString().padStart(2, '0')}`;
+                    
+                    const progressPercent = Math.min(100, (elapsed / (ATTACK_DURATION_HOURS * 3600)) * 100);
+                    timeProgressFill.style.width = `${progressPercent}%`;
+                    
+                    let damageCost, businessesAffected, countriesReached;
+                    
+                    if (simulationComplete) {
+                        damageCost = TOTAL_DAMAGE;
+                        businessesAffected = 100000;
+                        countriesReached = 30;
+                    } else {
+                        damageCost = Math.floor(TOTAL_DAMAGE * (infectionPercent / 100));
+                        businessesAffected = Math.floor(100000 * (infectionPercent / 100));
+                        countriesReached = Math.min(30, Math.floor(30 * (infectionPercent / 100)) + 1);
+                    }
+                    
+                    const damageCostFormatted = damageCost >= 1000000000 
+                        ? `$${(damageCost / 1000000000).toFixed(1)} billion` 
+                        : `$${(damageCost / 1000000).toFixed(1)} million`;
+                    
+                    realTimeStatsValues.damageCost.textContent = damageCostFormatted;
+                    damageCurrent.textContent = damageCostFormatted;
+                    
+                    damageFill.style.width = `${adjustedPercent}%`;
+                    
+                    realTimeStatsValues.businessesAffected.textContent = businessesAffected.toLocaleString();
+                    realTimeStatsValues.countriesReached.textContent = countriesReached;
+                    
+                    if (isInfected && !simulationComplete) {
+                        const currentTime = Date.now();
+                        
+                        if (infectedPeople.size === lastInfectedCount) {
+                            infectionStagnationTimer += currentTime - lastInfectionCheckTime;
+                            
+                            // Délai de stagnation pour les infections aléatoires
+                            if (infectionStagnationTimer > 5000) { // 5 secondes
+                                infectRandomPerson();
+                                infectionStagnationTimer = 0;
+                            }
+                        } else {
+                            infectionStagnationTimer = 0;
+                        }
+                        lastInfectionCheckTime = currentTime;
+                        
+                        randomInfectionTimer += currentTime - lastRandomInfectionTime;
+                        
+                        // Délai d'infection aléatoire
+                        if (randomInfectionTimer > 8000 / SIMULATION_SPEED) { // 8 secondes
+                            infectRandomPerson();
+                            randomInfectionTimer = 0;
+                        }
+                        lastRandomInfectionTime = currentTime;
+                        
+                        // Vérifier si la simulation est terminée
+                        if (infectedPeople.size >= PEOPLE_COUNT) {
+                            // S'assurer que la simulation dure au moins 15 secondes
+                            if (elapsedTime >= MIN_SIMULATION_DURATION) {
+                                completeSimulation();
+                            }
+                        }
+                    }
+                }
+            }
+            
+            function resetExperience() {
+                message.classList.remove('visible');
+                popupOverlay.classList.remove('visible');
+                
+                resetHeart();
+                
+                timeProgressFill.style.width = '0%';
+                progressCurrent.textContent = '0:00';
+                damageFill.style.width = '0%';
+                damageCurrent.textContent = '$0';
+                realTimeStatsValues.damageCost.textContent = '$0';
+                realTimeStatsValues.businessesAffected.textContent = '0';
+                realTimeStatsValues.countriesReached.textContent = '0';
+                
+                stats.infectedCount.textContent = '0';
+                stats.infectedPercent.textContent = '0';
+                stats.infectedComputers.textContent = '0';
+                stats.infectionRate.textContent = '0';
+                stats.timeElapsed.textContent = '0:00';
+                
+                createNetwork();
+            }
+            
+            function updateRotation() {
+                if (autoRotate) {
+                    targetRotationY += 0.002;
+                } else {
+                    targetRotationX += (mouseY * 0.05 - targetRotationX) * 0.05;
+                    targetRotationY += (mouseX * 0.05 - targetRotationY) * 0.05;
+                }
+                
+                scene.rotation.x = targetRotationX;
+                scene.rotation.y = targetRotationY;
+            }
+            
+            function updateParticles() {
+                if (particleSystem) {
+                    particleSystem.rotation.y += 0.001;
+                    particleSystem.rotation.x += 0.0005;
+                    
+                    const positions = particleSystem.geometry.attributes.position.array;
+                    const colors = particleSystem.geometry.attributes.color.array;
+                    
+                    for (let i = 0; i < positions.length; i += 3) {
+                        const time = Date.now() * 0.001;
+                        colors[i] = 0.8 + Math.sin(time + i) * 0.2;
+                        colors[i + 1] = 0.8 + Math.sin(time + i + 1) * 0.2;
+                        colors[i + 2] = 0.9 + Math.sin(time + i + 2) * 0.1;
+                    }
+                    
+                    particleSystem.geometry.attributes.color.needsUpdate = true;
+                }
+            }
+            
+            function animate() {
+                requestAnimationFrame(animate);
+                
+                const currentTime = performance.now();
+                const deltaTime = (currentTime - lastTime) / 1000;
+                
+                if (isInfected && !simulationComplete) {
+                    simulatedTime += deltaTime * 60 * infectionSpeedFactor;
+                    
+                    if (simulatedTime >= ATTACK_DURATION_HOURS * 3600) {
+                        completeSimulation();
+                    }
+                }
+                
+                lastTime = currentTime;
+                
+                if (isInfected && currentTime - lastUpdateTime > 100) {
+                    updateStats();
+                    lastUpdateTime = currentTime;
+                }
+                
+                updateRotation();
+                updateParticles();
+                updateInfectionParticles();
+                
+                orbitControls.update();
+                renderer.render(scene, camera);
+            }
+            
+            function onWindowResize() {
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(window.innerWidth, window.innerHeight);
+            }
+            
+            function onMouseMove(event) {
+                mouseX = (event.clientX / window.innerWidth) * 2 - 1;
+                mouseY = -(event.clientY / window.innerHeight) * 2 + 1;
+            }
+            
+            initThree();
+            createNetwork();
+            animate();
+        });
+    </script>
+</body>
+</html>
